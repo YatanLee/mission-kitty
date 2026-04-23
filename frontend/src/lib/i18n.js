@@ -1,6 +1,5 @@
 export const translations = {
   en: {
-    // Auth
     auth: {
       tagline: "Complete missions. Make Kitty happy~",
       email: "Email",
@@ -12,70 +11,64 @@ export const translations = {
       toSignIn: "Already have one? Sign in",
       confirmEmail: "Check your email to confirm! 📧",
     },
-
-    // Header
     header: {
       title: "🐾 Mission Kitty",
       signOut: "Sign out",
     },
-
-    // Tabs
     tabs: {
       missions: "📋 Missions",
+      schedule: "📅 Schedule",
       chat: "💬 Chat",
     },
-
-    // Cat Dashboard
     cat: {
       happiness: "Happiness",
       today: "Today",
       streak: "Day Streak 🔥",
+      petHint: "Click me! 🐾",
       states: {
-        sad: ["Meow... you haven't done anything today 😿", "I'm waiting... 🐾"],
-        idle: ["Come on, let's do something today~", "Kitty is watching you 👀"],
-        content: ["Not bad! Keep going, meow~", "Halfway there! Don't stop now 😼"],
-        happy: ["Almost there! Just a bit more~ 🐾", "You're doing great, nyaa!!"],
+        sad:         ["Meow... you haven't done anything today 😿", "I'm waiting... 🐾"],
+        idle:        ["Come on, let's do something today~", "Kitty is watching you 👀"],
+        content:     ["Not bad! Keep going, meow~", "Halfway there! Don't stop now 😼"],
+        happy:       ["Almost there! Just a bit more~ 🐾", "You're doing great, nyaa!!"],
         celebrating: ["NYAAAA!! You did it ALL!! 🎉🐟", "Kitty is SO happy!! Purrrr~ ✨"],
       },
     },
-
-    // Mission List
     missionList: {
       empty: "No missions yet!",
       emptyHint: "Add one below or ask Kitty~ 🐾",
       daily: "Daily",
       weekly: "Weekly",
+      monthly: "Monthly",
+      custom: "Custom",
       loading: "Loading missions...",
     },
-
-    // Mission Card
     missionCard: {
       toggle: "Toggle mission",
       delete: "Delete mission",
     },
-
-    // Mission Form
     missionForm: {
       title: "New Mission 🐾",
       titlePlaceholder: "What's the mission?",
       descPlaceholder: "Description (optional)",
       category: "Category",
-      frequency: "Frequency",
+      frequency: "Repeat",
+      every: "Every",
+      days: "days",
       cancel: "Cancel",
       add: "Add Mission",
-      categories: {
-        health: "Health",
-        work: "Work",
-        personal: "Personal",
-        custom: "Custom",
-      },
-      frequencies: {
-        daily: "Daily",
-        weekly: "Weekly",
-      },
+      categories: { health: "Health", work: "Work", personal: "Personal", custom: "Custom" },
+      frequencies: { daily: "Daily", weekly: "Weekly", monthly: "Monthly", custom: "Custom" },
     },
-
-    // Chat
+    schedule: {
+      week: "Week",
+      month: "Month",
+      dayNames: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      monthNames: [
+        "January","February","March","April","May","June",
+        "July","August","September","October","November","December",
+      ],
+      noMissions: "No missions",
+    },
     chat: {
       title: "Chat with Kitty",
       placeholder: "Talk to Kitty...",
@@ -84,8 +77,6 @@ export const translations = {
       greeting: "Meow~ I'm Kitty! Tell me a new mission or just chat! 🐾",
       error: "Nyaa... something went wrong 😿 Try again?",
     },
-
-    // Toasts
     toast: {
       missionAdded: "Mission added! Nyaa~ 😸",
       missionDone: "Kitty is happy! 🐾",
@@ -93,7 +84,6 @@ export const translations = {
     },
   },
 
-  // ── Traditional Chinese ──────────────────────────────────────────
   zh: {
     auth: {
       tagline: "完成任務，讓貓咪開心～",
@@ -106,63 +96,64 @@ export const translations = {
       toSignIn: "已有帳號？點此登入",
       confirmEmail: "請查看信箱確認帳號！📧",
     },
-
     header: {
       title: "🐾 任務貓咪",
       signOut: "登出",
     },
-
     tabs: {
       missions: "📋 任務",
+      schedule: "📅 行程",
       chat: "💬 聊天",
     },
-
     cat: {
       happiness: "開心程度",
       today: "今日",
       streak: "連續天數 🔥",
+      petHint: "點我！🐾",
       states: {
-        sad: ["喵……你今天什麼都沒做 😿", "我在等你…… 🐾"],
-        idle: ["來嘛，今天做點什麼吧～", "貓咪在看著你喔 👀"],
-        content: ["還不錯！繼續加油，喵～", "做到一半了！不要停下來 😼"],
-        happy: ["快到了！再一點點～ 🐾", "你表現得很棒，喵啊！！"],
+        sad:         ["喵……你今天什麼都沒做 😿", "我在等你…… 🐾"],
+        idle:        ["來嘛，今天做點什麼吧～", "貓咪在看著你喔 👀"],
+        content:     ["還不錯！繼續加油，喵～", "做到一半了！不要停下來 😼"],
+        happy:       ["快到了！再一點點～ 🐾", "你表現得很棒，喵啊！！"],
         celebrating: ["喵啊啊啊！！全部完成了！！🎉🐟", "貓咪超開心！！！呼嚕嚕～ ✨"],
       },
     },
-
     missionList: {
       empty: "還沒有任務！",
       emptyHint: "在下方新增，或請貓咪幫你建立～ 🐾",
       daily: "每日",
       weekly: "每週",
+      monthly: "每月",
+      custom: "自訂",
       loading: "載入任務中...",
     },
-
     missionCard: {
       toggle: "切換任務狀態",
       delete: "刪除任務",
     },
-
     missionForm: {
       title: "新增任務 🐾",
       titlePlaceholder: "任務是什麼？",
       descPlaceholder: "說明（選填）",
       category: "類別",
-      frequency: "頻率",
+      frequency: "重複",
+      every: "每隔",
+      days: "天",
       cancel: "取消",
       add: "新增任務",
-      categories: {
-        health: "健康",
-        work: "工作",
-        personal: "個人",
-        custom: "自訂",
-      },
-      frequencies: {
-        daily: "每日",
-        weekly: "每週",
-      },
+      categories: { health: "健康", work: "工作", personal: "個人", custom: "自訂" },
+      frequencies: { daily: "每日", weekly: "每週", monthly: "每月", custom: "自訂天數" },
     },
-
+    schedule: {
+      week: "週",
+      month: "月",
+      dayNames: ["一", "二", "三", "四", "五", "六", "日"],
+      monthNames: [
+        "一月","二月","三月","四月","五月","六月",
+        "七月","八月","九月","十月","十一月","十二月",
+      ],
+      noMissions: "無任務",
+    },
     chat: {
       title: "和貓咪聊天",
       placeholder: "跟貓咪說話...",
@@ -171,7 +162,6 @@ export const translations = {
       greeting: "喵～我是貓咪！告訴我新任務或直接聊天吧！🐾",
       error: "喵……出了點問題 😿 再試一次？",
     },
-
     toast: {
       missionAdded: "任務新增了！喵～ 😸",
       missionDone: "貓咪好開心！🐾",

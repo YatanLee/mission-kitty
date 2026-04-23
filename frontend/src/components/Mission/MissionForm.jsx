@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useLanguage } from "../../contexts/LanguageContext";
 
 const CATEGORIES = ["health", "work", "personal", "custom"];
-const FREQUENCIES = ["daily", "weekly"];
+const FREQUENCIES = ["daily", "weekly", "monthly", "custom"];
 
 export default function MissionForm({ onSubmit, onClose, prefill = {} }) {
   const { t } = useLanguage();
@@ -12,12 +12,15 @@ export default function MissionForm({ onSubmit, onClose, prefill = {} }) {
     description: prefill.description || "",
     category: prefill.category || "custom",
     frequency: prefill.frequency || "daily",
+    interval_days: prefill.interval_days || 3,
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.title.trim()) return;
-    onSubmit(form);
+    const data = { ...form };
+    if (data.frequency !== "custom") delete data.interval_days;
+    onSubmit(data);
     onClose();
   };
 
@@ -60,16 +63,11 @@ export default function MissionForm({ onSubmit, onClose, prefill = {} }) {
           <p className="text-xs text-gray-400 mb-2">{t.missionForm.category}</p>
           <div className="flex gap-2 flex-wrap">
             {CATEGORIES.map((c) => (
-              <button
-                key={c}
-                type="button"
+              <button key={c} type="button"
                 onClick={() => setForm({ ...form, category: c })}
                 className={`px-3 py-1 rounded-lg text-sm transition-colors ${
-                  form.category === c
-                    ? "bg-kitty-accent text-white"
-                    : "bg-kitty-card text-gray-400 hover:text-white"
-                }`}
-              >
+                  form.category === c ? "bg-kitty-accent text-white" : "bg-kitty-card text-gray-400 hover:text-white"
+                }`}>
                 {t.missionForm.categories[c]}
               </button>
             ))}
@@ -79,36 +77,46 @@ export default function MissionForm({ onSubmit, onClose, prefill = {} }) {
         {/* Frequency */}
         <div>
           <p className="text-xs text-gray-400 mb-2">{t.missionForm.frequency}</p>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             {FREQUENCIES.map((f) => (
-              <button
-                key={f}
-                type="button"
+              <button key={f} type="button"
                 onClick={() => setForm({ ...form, frequency: f })}
                 className={`px-3 py-1 rounded-lg text-sm transition-colors ${
-                  form.frequency === f
-                    ? "bg-kitty-purple text-white"
-                    : "bg-kitty-card text-gray-400 hover:text-white"
-                }`}
-              >
+                  form.frequency === f ? "bg-kitty-purple text-white" : "bg-kitty-card text-gray-400 hover:text-white"
+                }`}>
                 {t.missionForm.frequencies[f]}
               </button>
             ))}
           </div>
+
+          {/* Custom interval input */}
+          {form.frequency === "custom" && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              className="mt-3 flex items-center gap-2"
+            >
+              <span className="text-sm text-gray-400">{t.missionForm.every}</span>
+              <input
+                type="number"
+                min={1}
+                max={365}
+                value={form.interval_days}
+                onChange={(e) => setForm({ ...form, interval_days: parseInt(e.target.value) || 1 })}
+                className="w-16 bg-kitty-card rounded-xl px-3 py-2 text-white text-center outline-none focus:ring-2 focus:ring-kitty-purple"
+              />
+              <span className="text-sm text-gray-400">{t.missionForm.days}</span>
+            </motion.div>
+          )}
         </div>
 
         <div className="flex gap-3 pt-2">
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex-1 py-3 rounded-xl bg-kitty-card text-gray-400 hover:text-white transition-colors"
-          >
+          <button type="button" onClick={onClose}
+            className="flex-1 py-3 rounded-xl bg-kitty-card text-gray-400 hover:text-white transition-colors">
             {t.missionForm.cancel}
           </button>
-          <button
-            type="submit"
-            className="flex-1 py-3 rounded-xl bg-kitty-accent text-white font-semibold hover:opacity-90 transition-opacity"
-          >
+          <button type="submit"
+            className="flex-1 py-3 rounded-xl bg-kitty-accent text-white font-semibold hover:opacity-90 transition-opacity">
             {t.missionForm.add}
           </button>
         </div>

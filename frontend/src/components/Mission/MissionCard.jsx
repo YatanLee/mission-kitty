@@ -1,26 +1,19 @@
 import { motion } from "framer-motion";
 import { useLanguage } from "../../contexts/LanguageContext";
+import { formatRecurrence } from "../../lib/schedule";
 
 const CATEGORY_COLORS = {
-  health: "border-green-500 bg-green-500/10",
-  work: "border-blue-500 bg-blue-500/10",
+  health:   "border-green-500 bg-green-500/10",
+  work:     "border-blue-500 bg-blue-500/10",
   personal: "border-purple-500 bg-purple-500/10",
-  custom: "border-gray-500 bg-gray-500/10",
+  custom:   "border-gray-500 bg-gray-500/10",
 };
-
-const CATEGORY_ICONS = {
-  health: "💪",
-  work: "💼",
-  personal: "✨",
-  custom: "📌",
-};
+const CATEGORY_ICONS = { health: "💪", work: "💼", personal: "✨", custom: "📌" };
 
 export default function MissionCard({ mission, onToggle, onDelete }) {
   const { t } = useLanguage();
   const colorClass = CATEGORY_COLORS[mission.category] || CATEGORY_COLORS.custom;
   const icon = CATEGORY_ICONS[mission.category] || "📌";
-  const categoryLabel = t.missionForm.categories[mission.category] || mission.category;
-  const freqLabel = t.missionForm.frequencies[mission.frequency] || mission.frequency;
 
   return (
     <motion.div
@@ -28,9 +21,7 @@ export default function MissionCard({ mission, onToggle, onDelete }) {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
-      className={`rounded-xl border p-4 flex items-center gap-3 ${colorClass} ${
-        mission.is_done_today ? "opacity-60" : ""
-      }`}
+      className={`rounded-xl border p-4 flex items-center gap-3 ${colorClass} ${mission.is_done_today ? "opacity-60" : ""}`}
     >
       {/* Checkbox */}
       <button
@@ -56,11 +47,9 @@ export default function MissionCard({ mission, onToggle, onDelete }) {
         {mission.description && (
           <p className="text-xs text-gray-400 truncate mt-0.5">{mission.description}</p>
         )}
-        <div className="flex gap-2 mt-1">
-          <span className="text-xs text-gray-500">{categoryLabel} · {freqLabel}</span>
-          {mission.streak > 0 && (
-            <span className="text-xs text-kitty-gold">🔥 {mission.streak}</span>
-          )}
+        <div className="flex gap-2 mt-1 items-center">
+          <span className="text-xs text-gray-500">{formatRecurrence(mission, t)}</span>
+          {mission.streak > 0 && <span className="text-xs text-kitty-gold">🔥 {mission.streak}</span>}
         </div>
       </div>
 

@@ -1,16 +1,16 @@
 import { motion } from "framer-motion";
-import CatSprite from "./CatSprite";
+import ClickableCat from "./ClickableCat";
 import { useLanguage } from "../../contexts/LanguageContext";
 
 function HappinessBar({ value }) {
   const color =
     value === 100 ? "bg-kitty-gold" :
-    value >= 80 ? "bg-green-400" :
-    value >= 50 ? "bg-yellow-400" :
-    value > 0 ? "bg-orange-400" : "bg-gray-600";
+    value >= 80   ? "bg-green-400" :
+    value >= 50   ? "bg-yellow-400" :
+    value > 0     ? "bg-orange-400" : "bg-gray-600";
 
   return (
-    <div className="w-full bg-kitty-mid rounded-full h-3 overflow-hidden">
+    <div className="w-full bg-kitty-dark rounded-full h-3 overflow-hidden">
       <motion.div
         className={`h-full rounded-full ${color}`}
         initial={{ width: 0 }}
@@ -29,7 +29,11 @@ export default function CatDashboard({ catState }) {
 
   return (
     <div className="bg-kitty-mid rounded-2xl p-6 flex flex-col items-center gap-4 shadow-lg border border-kitty-card">
-      <CatSprite state={state} />
+      {/* Clickable black cat */}
+      <ClickableCat state={state} />
+
+      {/* Pet hint */}
+      <p className="text-xs text-gray-600 -mt-2">{t.cat.petHint}</p>
 
       {/* Speech bubble */}
       <motion.div
