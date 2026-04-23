@@ -4,26 +4,41 @@
 
 @layer base {
   body {
-    @apply bg-kitty-dark text-white min-h-screen;
+    @apply text-white min-h-screen;
     font-family: system-ui, -apple-system, sans-serif;
     -webkit-tap-highlight-color: transparent;
+    background: linear-gradient(160deg, #0d0d1f 0%, #12102a 45%, #0d0d1f 100%);
+    background-attachment: fixed;
+  }
+
+  /* Smooth scrolling */
+  * { scroll-behavior: smooth; }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #533483; border-radius: 2px; }
+}
+
+@layer components {
+  /* Glass card */
+  .glass {
+    background: rgba(22, 33, 62, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(83, 52, 131, 0.25);
+  }
+
+  /* Neon text */
+  .neon-gold {
+    text-shadow: 0 0 10px rgba(245, 166, 35, 0.7);
   }
 }
 
 /* Pixel art rendering */
-.pixel {
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
-}
+.pixel { image-rendering: pixelated; image-rendering: crisp-edges; }
 
-/* Cat sprite container */
-.cat-sprite {
-  width: 96px;
-  height: 96px;
-  image-rendering: pixelated;
+/* Progress ring animation */
+@keyframes progress-fill {
+  from { stroke-dashoffset: 100; }
 }
-
-/* Custom scrollbar */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #1a1a2e; }
-::-webkit-scrollbar-thumb { background: #533483; border-radius: 2px; }

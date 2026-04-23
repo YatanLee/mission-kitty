@@ -13,47 +13,43 @@ import { useLanguage } from "../contexts/LanguageContext";
 const TABS = ["missions", "schedule", "chat"];
 
 export default function HomePage() {
-  const { missions, catState, loading, completeMission, addMission, removeMission, fetchAll } = useMissions();
+  const { missions, catState, loading, completeMission, incrementMission, addMission, removeMission, fetchAll } = useMissions();
   const { signOut } = useAuth();
   const { lang, toggle, t } = useLanguage();
-  const [showForm, setShowForm] = useState(false);
-  const [tab, setTab] = useState("missions");
-  const [scheduleView, setScheduleView] = useState("week"); // "week" | "month"
+  const [showForm, setShowForm]       = useState(false);
+  const [tab, setTab]                 = useState("missions");
+  const [scheduleView, setScheduleView] = useState("week");
 
   return (
-    <div className="min-h-screen bg-kitty-dark flex flex-col max-w-md mx-auto">
+    <div className="min-h-screen flex flex-col max-w-md mx-auto relative">
       {/* Header */}
-      <header className="flex items-center justify-between px-4 pt-6 pb-2">
-        <h1 className="text-kitty-gold font-bold text-lg">{t.header.title}</h1>
+      <header className="flex items-center justify-between px-4 pt-8 pb-3 sticky top-0 z-20 bg-transparent">
+        <h1 className="text-kitty-gold font-bold text-lg neon-gold tracking-wide">{t.header.title}</h1>
         <div className="flex items-center gap-2">
-          <button
-            onClick={toggle}
-            className="px-3 py-1 rounded-lg bg-kitty-card text-sm text-gray-300 hover:text-white hover:bg-kitty-purple transition-colors font-medium"
-            title="Switch language / 切換語言"
-          >
+          <button onClick={toggle}
+            className="px-3 py-1.5 rounded-xl glass text-xs text-gray-300 hover:text-white transition-colors font-medium border border-white/10">
             {lang === "en" ? "繁中" : "EN"}
           </button>
-          <button onClick={signOut} className="text-xs text-gray-500 hover:text-gray-300">
+          <button onClick={signOut} className="text-xs text-gray-600 hover:text-gray-300 transition-colors">
             {t.header.signOut}
           </button>
         </div>
       </header>
 
-      {/* Scrollable content */}
-      <main className="flex-1 overflow-y-auto px-4 pb-24 space-y-4">
-        {/* Cat Dashboard */}
+      {/* Main scroll area */}
+      <main className="flex-1 overflow-y-auto px-4 pb-28 space-y-4">
+        {/* Cat */}
         <CatDashboard catState={catState} />
 
         {/* Tabs */}
-        <div className="flex bg-kitty-mid rounded-xl p-1 gap-1">
+        <div className="glass rounded-2xl p-1 flex gap-1">
           {TABS.map((tabKey) => (
-            <button
-              key={tabKey}
-              onClick={() => setTab(tabKey)}
-              className={`flex-1 py-2 rounded-lg text-xs font-medium transition-colors ${
-                tab === tabKey ? "bg-kitty-accent text-white" : "text-gray-400 hover:text-white"
-              }`}
-            >
+            <button key={tabKey} onClick={() => setTab(tabKey)}
+              className={`flex-1 py-2 rounded-xl text-xs font-medium transition-all ${
+                tab === tabKey
+                  ? "bg-kitty-accent text-white shadow-[0_0_14px_rgba(233,69,96,0.45)]"
+                  : "text-gray-500 hover:text-gray-300"
+              }`}>
               {t.tabs[tabKey]}
             </button>
           ))}
@@ -61,39 +57,28 @@ export default function HomePage() {
 
         {/* Tab: Missions */}
         {tab === "missions" && (
-          loading ? (
-            <div className="text-center py-10 text-gray-500 animate-pulse">{t.missionList.loading}</div>
-          ) : (
-            <MissionList missions={missions} onToggle={completeMission} onDelete={removeMission} />
-          )
+          loading
+            ? <div className="text-center py-14 text-gray-600 animate-pulse">{t.missionList.loading}</div>
+            : <MissionList missions={missions} onToggle={completeMission}
+                onDelete={removeMission} onIncrement={incrementMission} />
         )}
 
         {/* Tab: Schedule */}
         {tab === "schedule" && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="space-y-3"
-          >
-            {/* Week / Month toggle */}
-            <div className="flex bg-kitty-mid rounded-xl p-1 gap-1 w-fit mx-auto">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
+            <div className="glass rounded-xl p-1 flex gap-1 w-fit mx-auto">
               {["week", "month"].map((v) => (
-                <button
-                  key={v}
-                  onClick={() => setScheduleView(v)}
-                  className={`px-5 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                    scheduleView === v ? "bg-kitty-purple text-white" : "text-gray-400 hover:text-white"
-                  }`}
-                >
+                <button key={v} onClick={() => setScheduleView(v)}
+                  className={`px-6 py-1.5 rounded-xl text-sm font-medium transition-all ${
+                    scheduleView === v
+                      ? "bg-kitty-purple text-white shadow-[0_0_12px_rgba(83,52,131,0.6)]"
+                      : "text-gray-500 hover:text-gray-300"
+                  }`}>
                   {t.schedule[v]}
                 </button>
               ))}
             </div>
-
-            {scheduleView === "week"
-              ? <WeekView missions={missions} />
-              : <MonthView missions={missions} />
-            }
+            {scheduleView === "week" ? <WeekView missions={missions} /> : <MonthView missions={missions} />}
           </motion.div>
         )}
 
@@ -102,21 +87,21 @@ export default function HomePage() {
       </main>
 
       {/* FAB */}
-      <div className="fixed bottom-6 right-6">
-        <button
+      <div className="fixed bottom-8 right-5 z-30">
+        <motion.button
           onClick={() => setShowForm(true)}
-          className="w-14 h-14 bg-kitty-accent rounded-full text-white text-2xl shadow-lg hover:opacity-90 transition-opacity flex items-center justify-center"
+          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.08 }}
+          className="w-14 h-14 bg-kitty-accent rounded-2xl text-white text-3xl shadow-[0_0_24px_rgba(233,69,96,0.6)] flex items-center justify-center"
           aria-label={t.missionForm.title}
         >
           +
-        </button>
+        </motion.button>
       </div>
 
       {/* Mission Form Modal */}
       <AnimatePresence>
-        {showForm && (
-          <MissionForm onSubmit={addMission} onClose={() => setShowForm(false)} />
-        )}
+        {showForm && <MissionForm onSubmit={addMission} onClose={() => setShowForm(false)} />}
       </AnimatePresence>
     </div>
   );

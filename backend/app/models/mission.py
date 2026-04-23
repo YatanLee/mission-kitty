@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 from datetime import date
 from enum import Enum
@@ -23,7 +23,8 @@ class MissionCreate(BaseModel):
     description: Optional[str] = None
     category: Category = Category.custom
     frequency: Frequency = Frequency.daily
-    interval_days: Optional[int] = None   # for frequency=custom, e.g. every 3 days
+    interval_days: Optional[int] = None        # for frequency=custom
+    target_count: int = Field(default=1, ge=1, le=99)  # times per day/period
     due_date: Optional[date] = None
 
 
@@ -33,6 +34,8 @@ class MissionUpdate(BaseModel):
     category: Optional[Category] = None
     frequency: Optional[Frequency] = None
     interval_days: Optional[int] = None
+    target_count: Optional[int] = Field(default=None, ge=1, le=99)
+    completed_count: Optional[int] = Field(default=None, ge=0)
     is_done_today: Optional[bool] = None
     due_date: Optional[date] = None
     last_completed_date: Optional[date] = None
@@ -46,6 +49,8 @@ class Mission(BaseModel):
     category: Category
     frequency: Frequency
     interval_days: Optional[int] = None
+    target_count: int = 1
+    completed_count: int = 0
     is_done_today: bool = False
     streak: int = 0
     due_date: Optional[date] = None
