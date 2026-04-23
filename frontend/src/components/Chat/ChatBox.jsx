@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { api } from "../../lib/api";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 export default function ChatBox({ onMissionCreated }) {
+  const { t } = useLanguage();
   const [messages, setMessages] = useState([
-    { role: "kitty", text: "Meow~ I'm Kitty! Tell me a new mission or just chat! 🐾" },
+    { role: "kitty", text: t.chat.greeting },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -30,7 +32,7 @@ export default function ChatBox({ onMissionCreated }) {
     } catch {
       setMessages((prev) => [
         ...prev,
-        { role: "kitty", text: "Nyaa... something went wrong 😿 Try again?" },
+        { role: "kitty", text: t.chat.error },
       ]);
     } finally {
       setLoading(false);
@@ -42,7 +44,7 @@ export default function ChatBox({ onMissionCreated }) {
       {/* Header */}
       <div className="px-4 py-3 border-b border-kitty-card flex items-center gap-2">
         <span className="text-lg">🐱</span>
-        <span className="text-sm font-semibold text-kitty-gold">Chat with Kitty</span>
+        <span className="text-sm font-semibold text-kitty-gold">{t.chat.title}</span>
       </div>
 
       {/* Messages */}
@@ -70,7 +72,7 @@ export default function ChatBox({ onMissionCreated }) {
         {loading && (
           <div className="flex justify-start">
             <div className="bg-kitty-card rounded-2xl px-4 py-2 text-gray-400 text-sm animate-pulse">
-              Kitty is thinking...
+              {t.chat.thinking}
             </div>
           </div>
         )}
@@ -84,7 +86,7 @@ export default function ChatBox({ onMissionCreated }) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
-          placeholder="Talk to Kitty..."
+          placeholder={t.chat.placeholder}
           className="flex-1 bg-kitty-card rounded-xl px-3 py-2 text-sm text-white placeholder-gray-500 outline-none"
         />
         <button
@@ -92,7 +94,7 @@ export default function ChatBox({ onMissionCreated }) {
           disabled={loading || !input.trim()}
           className="bg-kitty-accent text-white rounded-xl px-4 py-2 text-sm font-medium disabled:opacity-40 hover:opacity-90 transition-opacity"
         >
-          Send
+          {t.chat.send}
         </button>
       </div>
     </div>

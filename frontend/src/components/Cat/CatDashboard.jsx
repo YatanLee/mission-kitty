@@ -1,13 +1,6 @@
 import { motion } from "framer-motion";
 import CatSprite from "./CatSprite";
-
-const STATE_MESSAGES = {
-  sad: ["Meow... you haven't done anything today 😿", "I'm waiting... 🐾"],
-  idle: ["Come on, let's do something today~", "Kitty is watching you 👀"],
-  content: ["Not bad! Keep going, meow~", "Halfway there! Don't stop now 😼"],
-  happy: ["Almost there! Just a bit more~ 🐾", "You're doing great, nyaa!!"],
-  celebrating: ["NYAAAA!! You did it ALL!! 🎉🐟", "Kitty is SO happy!! Purrrr~ ✨"],
-};
+import { useLanguage } from "../../contexts/LanguageContext";
 
 function HappinessBar({ value }) {
   const color =
@@ -29,13 +22,13 @@ function HappinessBar({ value }) {
 }
 
 export default function CatDashboard({ catState }) {
+  const { t } = useLanguage();
   const { happiness = 0, state = "idle", done = 0, total = 0, streak = 0 } = catState;
-  const messages = STATE_MESSAGES[state] || STATE_MESSAGES.idle;
+  const messages = t.cat.states[state] || t.cat.states.idle;
   const msg = messages[Math.floor(Date.now() / 10000) % messages.length];
 
   return (
     <div className="bg-kitty-mid rounded-2xl p-6 flex flex-col items-center gap-4 shadow-lg border border-kitty-card">
-      {/* Cat */}
       <CatSprite state={state} />
 
       {/* Speech bubble */}
@@ -52,21 +45,21 @@ export default function CatDashboard({ catState }) {
       {/* Happiness bar */}
       <div className="w-full space-y-1">
         <div className="flex justify-between text-xs text-gray-400">
-          <span>Happiness</span>
+          <span>{t.cat.happiness}</span>
           <span>{happiness}%</span>
         </div>
         <HappinessBar value={happiness} />
       </div>
 
-      {/* Stats row */}
+      {/* Stats */}
       <div className="flex gap-6 text-center w-full justify-around">
         <div>
           <p className="text-kitty-gold font-bold text-xl">{done}/{total}</p>
-          <p className="text-xs text-gray-400">Today</p>
+          <p className="text-xs text-gray-400">{t.cat.today}</p>
         </div>
         <div>
           <p className="text-kitty-accent font-bold text-xl">{streak}</p>
-          <p className="text-xs text-gray-400">Day Streak 🔥</p>
+          <p className="text-xs text-gray-400">{t.cat.streak}</p>
         </div>
       </div>
     </div>

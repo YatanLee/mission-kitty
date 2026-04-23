@@ -1,5 +1,6 @@
 import { Toaster } from "react-hot-toast";
 import { useAuth } from "./hooks/useAuth";
+import { LanguageProvider } from "./contexts/LanguageContext";
 import AuthPage from "./pages/AuthPage";
 import HomePage from "./pages/HomePage";
 
@@ -15,7 +16,7 @@ export default function App() {
   }
 
   return (
-    <>
+    <LanguageProvider>
       <Toaster
         position="top-center"
         toastOptions={{
@@ -23,6 +24,6 @@ export default function App() {
         }}
       />
       {user ? <HomePage /> : <AuthPage />}
-    </>
+    </LanguageProvider>
   );
 }

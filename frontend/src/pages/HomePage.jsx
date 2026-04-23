@@ -6,13 +6,13 @@ import MissionForm from "../components/Mission/MissionForm";
 import ChatBox from "../components/Chat/ChatBox";
 import { useMissions } from "../hooks/useMissions";
 import { useAuth } from "../hooks/useAuth";
-
-const TABS = ["missions", "chat"];
+import { useLanguage } from "../contexts/LanguageContext";
 
 export default function HomePage() {
   const { missions, catState, loading, completeMission, addMission, removeMission, fetchAll } =
     useMissions();
-  const { signOut, user } = useAuth();
+  const { signOut } = useAuth();
+  const { lang, toggle, t } = useLanguage();
   const [showForm, setShowForm] = useState(false);
   const [tab, setTab] = useState("missions");
 
@@ -20,10 +20,20 @@ export default function HomePage() {
     <div className="min-h-screen bg-kitty-dark flex flex-col max-w-md mx-auto">
       {/* Header */}
       <header className="flex items-center justify-between px-4 pt-6 pb-2">
-        <h1 className="text-kitty-gold font-bold text-lg">🐾 Mission Kitty</h1>
-        <button onClick={signOut} className="text-xs text-gray-500 hover:text-gray-300">
-          Sign out
-        </button>
+        <h1 className="text-kitty-gold font-bold text-lg">{t.header.title}</h1>
+        <div className="flex items-center gap-2">
+          {/* Language toggle */}
+          <button
+            onClick={toggle}
+            className="px-3 py-1 rounded-lg bg-kitty-card text-sm text-gray-300 hover:text-white hover:bg-kitty-purple transition-colors font-medium"
+            title="Switch language / 切換語言"
+          >
+            {lang === "en" ? "繁中" : "EN"}
+          </button>
+          <button onClick={signOut} className="text-xs text-gray-500 hover:text-gray-300">
+            {t.header.signOut}
+          </button>
+        </div>
       </header>
 
       {/* Scrollable content */}
@@ -33,17 +43,17 @@ export default function HomePage() {
 
         {/* Tabs */}
         <div className="flex bg-kitty-mid rounded-xl p-1 gap-1">
-          {TABS.map((t) => (
+          {["missions", "chat"].map((tabKey) => (
             <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`flex-1 py-2 rounded-lg text-sm font-medium capitalize transition-colors ${
-                tab === t
+              key={tabKey}
+              onClick={() => setTab(tabKey)}
+              className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
+                tab === tabKey
                   ? "bg-kitty-accent text-white"
                   : "text-gray-400 hover:text-white"
               }`}
             >
-              {t === "missions" ? "📋 Missions" : "💬 Chat"}
+              {t.tabs[tabKey]}
             </button>
           ))}
         </div>
@@ -51,7 +61,9 @@ export default function HomePage() {
         {/* Tab content */}
         {tab === "missions" ? (
           loading ? (
-            <div className="text-center py-10 text-gray-500 animate-pulse">Loading missions...</div>
+            <div className="text-center py-10 text-gray-500 animate-pulse">
+              {t.missionList.loading}
+            </div>
           ) : (
             <MissionList
               missions={missions}
@@ -69,7 +81,7 @@ export default function HomePage() {
         <button
           onClick={() => setShowForm(true)}
           className="w-14 h-14 bg-kitty-accent rounded-full text-white text-2xl shadow-lg hover:opacity-90 transition-opacity flex items-center justify-center"
-          aria-label="Add mission"
+          aria-label={t.missionForm.title}
         >
           +
         </button>

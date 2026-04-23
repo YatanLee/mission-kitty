@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { api } from "../lib/api";
+import { useLanguage } from "../contexts/LanguageContext";
 import toast from "react-hot-toast";
 
 export function useMissions() {
+  const { t } = useLanguage();
   const [missions, setMissions] = useState([]);
   const [catState, setCatState] = useState({ happiness: 0, state: "idle", streak: 0 });
   const [loading, setLoading] = useState(true);
@@ -16,11 +18,11 @@ export function useMissions() {
       setMissions(m || []);
       setCatState(cat);
     } catch {
-      toast.error("Meow... couldn't load missions 😿");
+      toast.error(t.toast.loadError);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => { fetchAll(); }, [fetchAll]);
 
@@ -32,25 +34,24 @@ export function useMissions() {
       await api.updateMission(id, { is_done_today: isDone });
       const cat = await api.getCatState();
       setCatState(cat);
-      if (isDone) toast.success("Kitty is happy! 🐾");
+      if (isDone) toast.success(t.toast.missionDone);
     } catch {
-      // Rollback
       setMissions((prev) =>
         prev.map((m) => (m.id === id ? { ...m, is_done_today: !isDone } : m))
       );
     }
-  }, []);
+  }, [t]);
 
   const addMission = useCallback(async (data) => {
     try {
       const mission = await api.createMission(data);
       setMissions((prev) => [mission, ...prev]);
-      toast.success("Mission added! Nyaa~ 😸");
+      toast.success(t.toast.missionAdded);
       return mission;
     } catch {
-      toast.error("Couldn't add mission 😿");
+      toast.error(t.toast.loadError);
     }
-  }, []);
+  }, [t]);
 
   const removeMission = useCallback(async (id) => {
     setMissions((prev) => prev.filter((m) => m.id !== id));

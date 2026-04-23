@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 const CATEGORY_COLORS = {
   health: "border-green-500 bg-green-500/10",
@@ -15,8 +16,11 @@ const CATEGORY_ICONS = {
 };
 
 export default function MissionCard({ mission, onToggle, onDelete }) {
+  const { t } = useLanguage();
   const colorClass = CATEGORY_COLORS[mission.category] || CATEGORY_COLORS.custom;
   const icon = CATEGORY_ICONS[mission.category] || "📌";
+  const categoryLabel = t.missionForm.categories[mission.category] || mission.category;
+  const freqLabel = t.missionForm.frequencies[mission.frequency] || mission.frequency;
 
   return (
     <motion.div
@@ -36,7 +40,7 @@ export default function MissionCard({ mission, onToggle, onDelete }) {
             ? "bg-kitty-gold border-kitty-gold text-black"
             : "border-gray-500 hover:border-kitty-gold"
         }`}
-        aria-label="Toggle mission"
+        aria-label={t.missionCard.toggle}
       >
         {mission.is_done_today && "✓"}
       </button>
@@ -53,7 +57,7 @@ export default function MissionCard({ mission, onToggle, onDelete }) {
           <p className="text-xs text-gray-400 truncate mt-0.5">{mission.description}</p>
         )}
         <div className="flex gap-2 mt-1">
-          <span className="text-xs text-gray-500 capitalize">{mission.frequency}</span>
+          <span className="text-xs text-gray-500">{categoryLabel} · {freqLabel}</span>
           {mission.streak > 0 && (
             <span className="text-xs text-kitty-gold">🔥 {mission.streak}</span>
           )}
@@ -64,7 +68,7 @@ export default function MissionCard({ mission, onToggle, onDelete }) {
       <button
         onClick={() => onDelete(mission.id)}
         className="text-gray-600 hover:text-kitty-accent text-lg flex-shrink-0"
-        aria-label="Delete mission"
+        aria-label={t.missionCard.delete}
       >
         ×
       </button>
